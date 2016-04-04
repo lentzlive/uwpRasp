@@ -7,7 +7,7 @@ TO DO
 <br><br>
 <b>Note</b>
 
-
+```javascript
 Stopwatch sw = new Stopwatch();
 sw.Start();
 
@@ -17,4 +17,4 @@ sw.Stop();
 
 long microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L));
 long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L*1000L));
-
+```
