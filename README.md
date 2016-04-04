@@ -5,6 +5,7 @@ Iot Project with test chart
 <br>
 <b>Note</b>
 
+<code>
 Stopwatch sw = new Stopwatch();
 sw.Start();
 
@@ -14,3 +15,4 @@ sw.Stop();
 
 long microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L));
 long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L*1000L));
+</code>
