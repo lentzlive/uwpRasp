@@ -7,7 +7,7 @@ TO DO
 <br><br>
 <b>Note</b>
 
-```javascript
+```c#
 Stopwatch sw = new Stopwatch();
 sw.Start();
 
