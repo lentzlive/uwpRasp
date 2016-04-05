@@ -28,7 +28,7 @@ namespace uwpRasp.Views
         public static double minData = 10000;
         public static double MaxData = 0;
 
-        public static long sumTime =0;
+        public static double sumTime =0;
 
 
         static DeviceClient deviceClient;
@@ -119,8 +119,8 @@ namespace uwpRasp.Views
 
                 sw.Stop();
 
-                //long microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
-                long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L * 1000L));
+                double microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                //long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L * 1000L));
 
 
                 //DateTime t2 = DateTime.Now;
@@ -128,7 +128,7 @@ namespace uwpRasp.Views
                 //string diff = timeDiff.TotalMilliseconds.ToString();
 
                 //sumTime += timeDiff.TotalMilliseconds;
-                sumTime += nanoseconds;
+                sumTime += microseconds;
                 
 
 
@@ -146,8 +146,8 @@ namespace uwpRasp.Views
 
                     indexcount2++;
                  
-                    txtTimeDiffMedio.Text = Convert.ToString(sumTime / indexcount2) + " ns";
-                    txtTimeDiff.Text = nanoseconds + " ns";
+                    txtTimeDiffMedio.Text = Convert.ToString(sumTime / indexcount2) + " us";
+                    txtTimeDiff.Text = microseconds + " us";
 
                 });
             }
