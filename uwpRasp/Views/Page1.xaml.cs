@@ -4,6 +4,7 @@ using DeviceLibrary.Model;
 using Microsoft.Azure.Devices.Client;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using Windows.Foundation;
@@ -27,7 +28,7 @@ namespace uwpRasp.Views
         public static double minData = 10000;
         public static double MaxData = 0;
 
-        public static double sumTime = 0.00;
+        public static long sumTime =0;
 
 
         static DeviceClient deviceClient;
@@ -111,11 +112,25 @@ namespace uwpRasp.Views
                 Sensor s = new Sensor();
                 SensorValues sValues = s.GetSensorValue(_deviceId);
                 // 
-                DateTime t2 = DateTime.Now;
-                TimeSpan timeDiff = t2 - t1;
-                string diff = timeDiff.TotalMilliseconds.ToString();
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
 
-                sumTime += timeDiff.TotalMilliseconds;
+                // Do something you want to time
+
+                sw.Stop();
+
+                //long microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L * 1000L));
+
+
+                //DateTime t2 = DateTime.Now;
+                //TimeSpan timeDiff = t2 - t1;
+                //string diff = timeDiff.TotalMilliseconds.ToString();
+
+                //sumTime += timeDiff.TotalMilliseconds;
+                sumTime += nanoseconds;
+                
+
 
                 var task = this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
@@ -131,8 +146,8 @@ namespace uwpRasp.Views
 
                     indexcount2++;
                  
-                    txtTimeDiffMedio.Text = Convert.ToString(sumTime / indexcount2) + " ms";
-                    txtTimeDiff.Text = diff + " ms";
+                    txtTimeDiffMedio.Text = Convert.ToString(sumTime / indexcount2) + " ns";
+                    txtTimeDiff.Text = nanoseconds + " ns";
 
                 });
             }
@@ -222,7 +237,7 @@ namespace uwpRasp.Views
                 //  periodicTimer.Change(0, this.Timing);
                 data.Clear();
                 indexcount2 = 0;
-                sumTime = 0.0;
+                sumTime = 0;
             }
             catch (Exception ex)
             { this.StatusText.Text = ex.Message; }
