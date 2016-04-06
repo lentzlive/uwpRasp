@@ -108,26 +108,19 @@ namespace uwpRasp.Views
 
             try
             {
-                DateTime t1 = DateTime.Now;
-                Sensor s = new Sensor();
-                SensorValues sValues = s.GetSensorValue(_deviceId);
-                // 
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                // Do something you want to time
+
+                Sensor s = new Sensor();
+                SensorValues sValues = s.GetSensorValue(_deviceId);
+           
 
                 sw.Stop();
 
-                double microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
-                //long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L * 1000L));
+                double microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));            
+             //   double ns = 1000000000.0 * (double)sw.ElapsedTicks / Stopwatch.Frequency;
 
-
-                //DateTime t2 = DateTime.Now;
-                //TimeSpan timeDiff = t2 - t1;
-                //string diff = timeDiff.TotalMilliseconds.ToString();
-
-                //sumTime += timeDiff.TotalMilliseconds;
                 sumTime += microseconds;
                 
 
@@ -146,8 +139,8 @@ namespace uwpRasp.Views
 
                     indexcount2++;
                  
-                    txtTimeDiffMedio.Text = Convert.ToString(sumTime / indexcount2) + " us";
-                    txtTimeDiff.Text = microseconds + " us";
+                    txtTimeDiffMedio.Text = "Istant: " + Convert.ToString(sumTime / indexcount2) + " us";
+                    txtTimeDiff.Text ="medio: " + microseconds + " us";
 
                 });
             }

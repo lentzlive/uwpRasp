@@ -49,6 +49,12 @@ namespace uwpRasp
                     Label = "Download Source Code",
                     DestinationPage = typeof(Uri),
                     Arguments = "http://scottge.net/product/uwp-windows-10-sample-navigation-panes",
+                },
+                  new NavMenuItem()
+                {
+                    Symbol = Symbol.Edit,
+                    Label = "Page4",
+                    DestinationPage = typeof(Views.Page4)
                 }
             });
 
