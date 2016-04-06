@@ -20,11 +20,13 @@
                             VerticalAlignment="Stretch" 
                             VerticalContentAlignment="Stretch" 
                             Orientation="Vertical"
-                            SizeMode="Stretch">
+                            SizeMode="Stretch" Margin="52,0,973,0" Height="523">
+                <TextBlock x:Name="txtCount" />
+                
                 <Charts:CartesianChart x:Name="chart" 
                                    ToolTipEnabled="False"
                                    SelectionMode="None"
-                                   Margin="50,0,50,25" Height="97">
+                                   Margin="10,0" Height="410">
                     <Charts:CartesianChart.AxisX>
                         <Charts:AxisX ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="False">
                             <Charts:AxisX.WholeRange>

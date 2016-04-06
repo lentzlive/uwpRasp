@@ -72,9 +72,16 @@ namespace uwpRasp.Views
             timer.Stop();
         }
 
+
+     public static   int i = 0;
+
         void OnTimerTick(object sender, object e)
         {
+
             Data.Refresh();
+           
+            txtCount.Text = Convert.ToString(3 * i);
+            i++;
         }
     }
 
@@ -94,6 +101,7 @@ namespace uwpRasp.Views
 
         public SinDataGenerator()
         {
+
             for (int i = 0; i < PointsCount; i++)
             {
                 points.Add(new Point(i, GetValue(count)));
@@ -104,6 +112,13 @@ namespace uwpRasp.Views
         {
             count++;
         }
+
+        double ReturnCount()
+        {
+            return count;
+        }
+
+
         double GetValue(double count)
         {
             return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
@@ -137,6 +152,7 @@ namespace uwpRasp.Views
                 points.RemoveAt(0);
                 points.Add(new Point(count, GetValue(count)));
                 IncreaseCount();
+
             }
             OnDataChanged(ChartDataUpdateType.Reset, -1);
         }
