@@ -16,17 +16,13 @@
                           HorizontalItemSpacing="50"
                           PortraitOrientation="Vertical">
             <Layout:LayoutGroup Header="Real-time Data"
-                            HorizontalHeaderAlignment="Center"
-                            VerticalAlignment="Stretch" 
-                            VerticalContentAlignment="Stretch" 
-                            Orientation="Vertical"
+                          
+                         
                             SizeMode="Stretch" Margin="52,0,973,0" Height="523">
-                <TextBlock x:Name="txtCount" />
-                
+
                 <Charts:CartesianChart x:Name="chart" 
                                    ToolTipEnabled="False"
-                                   SelectionMode="None"
-                                   Margin="10,0" Height="410">
+                                   SelectionMode="None" Height="458">
                     <Charts:CartesianChart.AxisX>
                         <Charts:AxisX ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="False">
                             <Charts:AxisX.WholeRange>
@@ -37,7 +33,7 @@
                     <Charts:CartesianChart.AxisY>
                         <Charts:AxisY ShowMajorGridlines="True" ShowMinorGridlines="True">
                             <Charts:AxisY.WholeRange>
-                                <Charts:WholeAxisRange AutoCorrect="False" StartValue="-50" EndValue="50" />
+                                <Charts:WholeAxisRange AutoCorrect="False" StartValue="0" EndValue="40" />
                             </Charts:AxisY.WholeRange>
                         </Charts:AxisY>
                     </Charts:CartesianChart.AxisY>
@@ -49,6 +45,8 @@
                         </Charts:Series>
                     </Charts:CartesianChart.Series>
                 </Charts:CartesianChart>
+                <TextBlock x:Name="txtCount" />
+                <TextBlock x:Name="txtTimeWatch" />
             </Layout:LayoutGroup>
         </Layout:LayoutControl>
     </Grid>

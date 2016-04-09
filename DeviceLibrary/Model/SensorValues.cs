@@ -11,6 +11,8 @@ namespace DeviceLibrary.Model
 
 
         private string _deviceId = string.Empty;
+        private double _timewatch = 0.00;
+
         private string _Temp = string.Empty;
         private string _Volt = string.Empty;
         private string _statusDevice = string.Empty;
@@ -64,6 +66,19 @@ namespace DeviceLibrary.Model
             set
             {
                 _statusDevice = value;
+            }
+        }
+
+        public double Timewatch
+        {
+            get
+            {
+                return _timewatch;
+            }
+
+            set
+            {
+                _timewatch = value;
             }
         }
     }

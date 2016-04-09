@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.ComponentModel;
 using DevExpress.UI.Xaml.Charts;
+using DeviceLibrary;
+using DeviceLibrary.Model;
 
 
 
@@ -26,11 +28,12 @@ namespace uwpRasp.Views
     /// </summary>
     public sealed partial class Page4 : Page
     {
+
         #region static
         public static readonly DependencyProperty DataProperty;
         static Page4()
         {
-            DataProperty = DependencyProperty.Register("Data", typeof(SinDataGenerator), typeof(Page4), new PropertyMetadata(null));
+            DataProperty = DependencyProperty.Register("Data", typeof(SensorDataGenerator), typeof(Page4), new PropertyMetadata(null));
         }
 
 
@@ -39,9 +42,9 @@ namespace uwpRasp.Views
 
 
         #region dep props
-        public SinDataGenerator Data
+        public SensorDataGenerator Data
         {
-            get { return (SinDataGenerator)GetValue(DataProperty); }
+            get { return (SensorDataGenerator)GetValue(DataProperty); }
             set { SetValue(DataProperty, value); }
         }
 
@@ -52,7 +55,7 @@ namespace uwpRasp.Views
         public Page4()
         {
             this.InitializeComponent();
-            Data = new SinDataGenerator();
+            Data = new SensorDataGenerator();
             timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1) };
             timer.Tick += OnTimerTick;
             Loaded += OnLoaded;
@@ -73,35 +76,38 @@ namespace uwpRasp.Views
         }
 
 
-     public static   int i = 0;
+        public static int i = 0;
+        public static string  strTime = "";
+
 
         void OnTimerTick(object sender, object e)
         {
 
             Data.Refresh();
+            txtCount.Text = Convert.ToString(i);
+            txtTimeWatch.Text = Data.GetTimeWatch();// strTime;
            
-            txtCount.Text = Convert.ToString(3 * i);
             i++;
         }
     }
 
 
-    public class SinDataGenerator : ChartDataAdapter
+    public class SensorDataGenerator : ChartDataAdapter
     {
 
         const int PointsCount = 1100;
         const double Divider = 500;
-        const int NewPointsCount = 3;
+        const int NewPointsCount = 1;
 
         double count = 0;
+        string timewatch = "";
         Random random = new Random();
         List<Point> points = new List<Point>();
 
         protected override int RowsCount { get { return points.Count; } }
 
-        public SinDataGenerator()
+        public SensorDataGenerator()
         {
-
             for (int i = 0; i < PointsCount; i++)
             {
                 points.Add(new Point(i, GetValue(count)));
@@ -119,9 +125,18 @@ namespace uwpRasp.Views
         }
 
 
+        public string GetTimeWatch()
+        {
+            return timewatch;
+        }
+
         double GetValue(double count)
         {
-            return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
+            Sensor s = new Sensor();
+            SensorValues sValues = s.GetSensorValue("myFirstDevice");
+            this.timewatch = sValues.Timewatch.ToString("F") + " us";
+            return Convert.ToDouble(sValues.Temp);
+            //return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
         }
         protected override DateTime GetDateTimeValue(int index, ChartDataMemberType dataMember)
         {

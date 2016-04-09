@@ -1,6 +1,7 @@
 ﻿using DeviceLibrary.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,13 @@ namespace DeviceLibrary
             s.DeviceId = deviceId;
             try
             {
-
+                Stopwatch sw = new Stopwatch();
+                sw.Start();                
                 s.Temp = getTemperature();
+                sw.Stop();
+
+                s.Timewatch= sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+
                 s.Volt = getVolts();
                 s.StatusDevice = "On";
 
