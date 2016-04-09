@@ -51,16 +51,31 @@ namespace uwpRasp.Views
 
 
         #endregion
-
+      //  SensorHelper _sensor = null;
         DispatcherTimer timer;
+        public static double minData = 10000;
+        public static double MaxData = 0;
+        SensorHelper _sensor = null;
+
         public Page4()
         {
             this.InitializeComponent();
-            Data = new SensorDataGenerator();
-            timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1) };
-            timer.Tick += OnTimerTick;
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
+            rangeY.StartValue = 18.0;// minData - minData * 0.0002;
+            rangeY.EndValue = 25.0;// MaxData + MaxData * 0.0002;
+            try
+            {
+                 _sensor = new SensorHelper();
+                Data = new SensorDataGenerator();
+                timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
+                timer.Tick += OnTimerTick;
+                Loaded += OnLoaded;
+                Unloaded += OnUnloaded;
+                //_sensor = new SensorHelper();
+                 StatusText.Text = _sensor.Message;
+            }
+            catch (Exception ex)
+            { StatusText.Text = ex.Message; }
+         
 
         }
 
@@ -74,7 +89,7 @@ namespace uwpRasp.Views
         {
             DataContext = null;
             timer.Stop();
-            
+
         }
 
 
@@ -84,27 +99,51 @@ namespace uwpRasp.Views
 
         void OnTimerTick(object sender, object e)
         {
+            try
+            {
+                Data.Refresh();
 
-            Data.Refresh();
 
-            double _timeMedio = 0.00;
-            double _time = Data.GetTimeWatch();
-            sumTime += _time;
-            _timeMedio = sumTime / i;
-            txtCount.Text = Convert.ToString(i);
-            txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
-            txtTimeWatchMedio.Text = _timeMedio.ToString("F");
-            i++;
+                double _timeMedio = 0.00;
+                double _time = Data.GetTimeWatch();
+                sumTime += _time;
+                _timeMedio = sumTime / i;
+                txtCount.Text = Convert.ToString(i);
+                txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
+                txtTimeWatchMedio.Text = _timeMedio.ToString("F");
+                i++;
+
+
+              
+                double temp = Data.GetTempValue();
+                if (temp > MaxData)
+                {
+                    MaxData = temp;
+                    rangeY.EndValue = Convert.ToDouble(temp) + 1;
+                }
+                if (temp < minData)
+                {
+                    minData = temp;
+                    rangeY.StartValue = Convert.ToDouble(temp) - 1;
+                }
+
+            }
+            catch (Exception ex)
+            { this.StatusText.Text = ex.Message; }
         }
 
         private void btnUpdatetiming_Click(object sender, RoutedEventArgs e)
         {
-            double timingInterval = double.Parse(cmbTiming.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
-            timer.Interval = TimeSpan.FromMilliseconds(timingInterval);
-         
-            i = 0;
-            sumTime = 0;
+            try
+            {
+                double timingInterval = double.Parse(cmbTiming.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
+                timer.Interval = TimeSpan.FromMilliseconds(timingInterval);
 
+                i = 0;
+                sumTime = 0;
+            }
+            catch (Exception ex)
+            { this.StatusText.Text = ex.Message; }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -114,7 +153,12 @@ namespace uwpRasp.Views
 
         private void cmdStopSpi_Click(object sender, RoutedEventArgs e)
         {
-            this.timer.Stop();
+            try
+            {
+                this.timer.Stop();
+            }
+            catch (Exception ex)
+            { this.StatusText.Text = ex.Message; }
         }
     }
 
@@ -128,6 +172,7 @@ namespace uwpRasp.Views
 
         double count = 0;
         double timewatch = 0.00;
+        double tempValue = 0.00;
         Random random = new Random();
         List<Point> points = new List<Point>();
 
@@ -137,7 +182,9 @@ namespace uwpRasp.Views
         {
             for (int i = 0; i < PointsCount; i++)
             {
-                points.Add(new Point(i, GetValue(count)));
+               // points.Add(new Point(i, GetValue(count)));
+                points.Add(new Point(i, 0));
+
                 IncreaseCount();
             }
         }
@@ -156,13 +203,19 @@ namespace uwpRasp.Views
         {
             return timewatch;
         }
+        public double GetTempValue()
+        {
+            return tempValue;
+        }
+
 
         double GetValue(double count)
         {
             Sensor s = new Sensor();
             SensorValues sValues = s.GetSensorValue("myFirstDevice");
             this.timewatch = sValues.Timewatch;
-            return Convert.ToDouble(sValues.Temp);
+            tempValue = Convert.ToDouble(sValues.Temp);
+            return tempValue;
             //return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
         }
         protected override DateTime GetDateTimeValue(int index, ChartDataMemberType dataMember)

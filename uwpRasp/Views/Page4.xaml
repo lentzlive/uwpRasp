@@ -38,7 +38,7 @@
                 <Charts:CartesianChart.AxisY>
                     <Charts:AxisY ShowMajorGridlines="True" ShowMinorGridlines="True">
                         <Charts:AxisY.WholeRange>
-                            <Charts:WholeAxisRange AutoCorrect="False" StartValue="20" EndValue="30" />
+                            <Charts:WholeAxisRange x:Name="rangeY" AutoCorrect="False" StartValue="20" EndValue="30" />
                         </Charts:AxisY.WholeRange>
                     </Charts:AxisY>
                 </Charts:CartesianChart.AxisY>
@@ -50,10 +50,10 @@
                     </Charts:Series>
                 </Charts:CartesianChart.Series>
             </Charts:CartesianChart>
-            <TextBlock x:Name="txtCount" Width="180" Canvas.Left="1034" Canvas.Top="35" Height="43" />
+            <TextBlock x:Name="txtCount" Height="50" Width="180" Canvas.Left="1034" Canvas.Top="35" />
 
-            <TextBlock x:Name="txtTimeWatch"   Width="180" Canvas.Left="1034" Canvas.Top="83" Height="29" />
-            <TextBlock x:Name="txtTimeWatchMedio" Height="42" Width="180" Canvas.Left="1034" Canvas.Top="163"   />
+            <TextBlock x:Name="txtTimeWatch" Height="50"   Width="180" Canvas.Left="1034" Canvas.Top="128"  />
+            <TextBlock x:Name="txtTimeWatchMedio" Height="50"  Width="180" Canvas.Left="1034" Canvas.Top="183"   />
 
         </Canvas>
         <Canvas Grid.Row="1" Grid.Column="1" Margin="0,10,20,10">

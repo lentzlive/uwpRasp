@@ -124,6 +124,8 @@ namespace DeviceLibrary
             ledPin.Write(GpioPinValue.High);
             ledPin2.Write(GpioPinValue.Low);
             ledPin.SetDriveMode(GpioPinDriveMode.Output);
+            ledPin2.SetDriveMode(GpioPinDriveMode.Output);
+
         }
 
         private void Timer_Tick(object state)

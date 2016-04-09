@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeviceLibrary;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation.Metadata;
@@ -21,6 +22,8 @@ namespace uwpRasp
         public App()
         {
             this.InitializeComponent();
+     
+
             this.Suspending += OnSuspending;
         }
 
