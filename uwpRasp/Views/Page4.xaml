@@ -10,44 +10,89 @@
     xmlns:Layout="using:DevExpress.UI.Xaml.Layout" 
     >
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Layout:LayoutControl VerticalContentAlignment="Stretch" 
-                          VerticalAlignment="Stretch" 
-                          HorizontalItemSpacing="50"
-                          PortraitOrientation="Vertical">
-            <Layout:LayoutGroup Header="Real-time Data"
-                          
-                         
-                            SizeMode="Stretch" Margin="52,0,973,0" Height="523">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" EntranceNavigationTransitionInfo.IsTargetElement="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="8*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="110"/>
+            <RowDefinition Height="Auto"/>
 
-                <Charts:CartesianChart x:Name="chart" 
+        </Grid.RowDefinitions>
+        <Canvas Grid.Row="2" Grid.Column="1" Margin="0,0,0,-516"  >
+
+
+            <Charts:CartesianChart x:Name="chart" 
                                    ToolTipEnabled="False"
-                                   SelectionMode="None" Height="458">
-                    <Charts:CartesianChart.AxisX>
-                        <Charts:AxisX ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="False">
-                            <Charts:AxisX.WholeRange>
-                                <Charts:WholeAxisRange SideMargins="0" />
-                            </Charts:AxisX.WholeRange>
-                        </Charts:AxisX>
-                    </Charts:CartesianChart.AxisX>
-                    <Charts:CartesianChart.AxisY>
-                        <Charts:AxisY ShowMajorGridlines="True" ShowMinorGridlines="True">
-                            <Charts:AxisY.WholeRange>
-                                <Charts:WholeAxisRange AutoCorrect="False" StartValue="0" EndValue="40" />
-                            </Charts:AxisY.WholeRange>
-                        </Charts:AxisY>
-                    </Charts:CartesianChart.AxisY>
-                    <Charts:CartesianChart.Series>
-                        <Charts:Series Data="{Binding Data}">
-                            <Charts:Series.View>
-                                <Charts:LineSeriesView/>
-                            </Charts:Series.View>
-                        </Charts:Series>
-                    </Charts:CartesianChart.Series>
-                </Charts:CartesianChart>
-                <TextBlock x:Name="txtCount" />
-                <TextBlock x:Name="txtTimeWatch" />
-            </Layout:LayoutGroup>
-        </Layout:LayoutControl>
+                                   SelectionMode="None" Height="458" Width="926" Canvas.Left="10">
+                <Charts:CartesianChart.AxisX>
+                    <Charts:AxisX ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="False">
+                        <Charts:AxisX.WholeRange>
+                            <Charts:WholeAxisRange SideMargins="0" />
+                        </Charts:AxisX.WholeRange>
+                    </Charts:AxisX>
+                </Charts:CartesianChart.AxisX>
+                <Charts:CartesianChart.AxisY>
+                    <Charts:AxisY ShowMajorGridlines="True" ShowMinorGridlines="True">
+                        <Charts:AxisY.WholeRange>
+                            <Charts:WholeAxisRange AutoCorrect="False" StartValue="20" EndValue="30" />
+                        </Charts:AxisY.WholeRange>
+                    </Charts:AxisY>
+                </Charts:CartesianChart.AxisY>
+                <Charts:CartesianChart.Series>
+                    <Charts:Series Data="{Binding Data}">
+                        <Charts:Series.View>
+                            <Charts:LineSeriesView/>
+                        </Charts:Series.View>
+                    </Charts:Series>
+                </Charts:CartesianChart.Series>
+            </Charts:CartesianChart>
+            <TextBlock x:Name="txtCount" Width="180" Canvas.Left="1034" Canvas.Top="35" Height="43" />
+
+            <TextBlock x:Name="txtTimeWatch"   Width="180" Canvas.Left="1034" Canvas.Top="83" Height="29" />
+            <TextBlock x:Name="txtTimeWatchMedio" Height="42" Width="180" Canvas.Left="1034" Canvas.Top="163"   />
+
+        </Canvas>
+        <Canvas Grid.Row="1" Grid.Column="1" Margin="0,10,20,10">
+            <TextBox x:Name="textPlaceHolder" Height="20" Canvas.Left="10" Canvas.Top="10" Width="341" />
+            <TextBox x:Name="StatusText" Height="20" Canvas.Left="10" Width="400" Canvas.Top="48" RenderTransformOrigin="-0.242,0.781"/>
+            <Button x:Name="button" Content="Clear" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.087,-0.195" Click="button_Click" Canvas.Left="356" Canvas.Top="10"/>
+            <Button Click="btnUpdatetiming_Click" x:Name="btnUpdatetiming" Content="Aggiorna" Canvas.Left="658" Canvas.Top="48" Width="92"/>
+            <ComboBox AllowDrop="True" x:Name="cmbTiming" Canvas.Left="473" Canvas.Top="48" Width="180">
+                <ComboBoxItem>0.00001</ComboBoxItem>
+                <ComboBoxItem>0.0001</ComboBoxItem>
+                <ComboBoxItem>0.001</ComboBoxItem>
+                <ComboBoxItem>0.01</ComboBoxItem>
+                <ComboBoxItem>0.1</ComboBoxItem>
+                <ComboBoxItem>1</ComboBoxItem>
+                <ComboBoxItem>10</ComboBoxItem>
+                <ComboBoxItem >100</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">1000</ComboBoxItem>
+                <ComboBoxItem>10000</ComboBoxItem>
+                <ComboBoxItem>20000</ComboBoxItem>
+                <ComboBoxItem>30000</ComboBoxItem>
+
+            </ComboBox>
+            <TextBlock x:Name="textBlock" Canvas.Left="473" TextWrapping="Wrap" Text="Temporizzazione Timer acquisizione [ms]" Canvas.Top="10" Width="277"/>
+
+            <TextBlock x:Name="textBlock1" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="Numero canali di acquisizione" VerticalAlignment="Top" Canvas.Left="785" Canvas.Top="10"/>
+            <ComboBox AllowDrop="True" x:Name="cmbChannel" Canvas.Left="785" Canvas.Top="48" Width="91" Grid.Column="1" Grid.Row="1" RenderTransformOrigin="-4.989,-1.625">
+                <ComboBoxItem IsSelected="True">1</ComboBoxItem>
+                <ComboBoxItem>2</ComboBoxItem>
+                <ComboBoxItem >3</ComboBoxItem>
+                <ComboBoxItem>4</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+                <ComboBoxItem>6</ComboBoxItem>
+                <ComboBoxItem>7</ComboBoxItem>
+                <ComboBoxItem>8</ComboBoxItem>
+            </ComboBox>
+            <Button x:Name="cmdChannelUpdate" Content="Aggiorna" Canvas.Left="900" Canvas.Top="48" Width="83"/>
+            <Button x:Name="cmdStopSpi" Click="cmdStopSpi_Click" Content="STOP" Canvas.Left="1142" Canvas.Top="26" Width="195" VerticalAlignment="Stretch" Height="54"/>
+        </Canvas>
+
+
     </Grid>
 </Page>

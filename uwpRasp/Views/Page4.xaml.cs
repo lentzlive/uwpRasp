@@ -16,6 +16,7 @@ using System.ComponentModel;
 using DevExpress.UI.Xaml.Charts;
 using DeviceLibrary;
 using DeviceLibrary.Model;
+using System.Globalization;
 
 
 
@@ -73,21 +74,47 @@ namespace uwpRasp.Views
         {
             DataContext = null;
             timer.Stop();
+            
         }
 
 
-        public static int i = 0;
-        public static string  strTime = "";
-
+        public static int i = 1;
+        public static string strTime = "";
+        public static double sumTime = 0.00;
 
         void OnTimerTick(object sender, object e)
         {
 
             Data.Refresh();
+
+            double _timeMedio = 0.00;
+            double _time = Data.GetTimeWatch();
+            sumTime += _time;
+            _timeMedio = sumTime / i;
             txtCount.Text = Convert.ToString(i);
-            txtTimeWatch.Text = Data.GetTimeWatch();// strTime;
-           
+            txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
+            txtTimeWatchMedio.Text = _timeMedio.ToString("F");
             i++;
+        }
+
+        private void btnUpdatetiming_Click(object sender, RoutedEventArgs e)
+        {
+            double timingInterval = double.Parse(cmbTiming.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
+            timer.Interval = TimeSpan.FromMilliseconds(timingInterval);
+         
+            i = 0;
+            sumTime = 0;
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cmdStopSpi_Click(object sender, RoutedEventArgs e)
+        {
+            this.timer.Stop();
         }
     }
 
@@ -100,7 +127,7 @@ namespace uwpRasp.Views
         const int NewPointsCount = 1;
 
         double count = 0;
-        string timewatch = "";
+        double timewatch = 0.00;
         Random random = new Random();
         List<Point> points = new List<Point>();
 
@@ -125,7 +152,7 @@ namespace uwpRasp.Views
         }
 
 
-        public string GetTimeWatch()
+        public double GetTimeWatch()
         {
             return timewatch;
         }
@@ -134,7 +161,7 @@ namespace uwpRasp.Views
         {
             Sensor s = new Sensor();
             SensorValues sValues = s.GetSensorValue("myFirstDevice");
-            this.timewatch = sValues.Timewatch.ToString("F") + " us";
+            this.timewatch = sValues.Timewatch;
             return Convert.ToDouble(sValues.Temp);
             //return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
         }

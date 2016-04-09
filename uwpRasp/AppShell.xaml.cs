@@ -27,6 +27,12 @@ namespace uwpRasp
             {
                 new NavMenuItem()
                 {
+                    Symbol = Symbol.Edit,
+                    Label = "Real Time",
+                    DestinationPage = typeof(Views.Page4)
+                },
+                new NavMenuItem()
+                {
                     Symbol = Symbol.Contact,
                     Label = "Page1",
                     DestinationPage = typeof(Views.Page1)
@@ -49,13 +55,8 @@ namespace uwpRasp
                     Label = "Download Source Code",
                     DestinationPage = typeof(Uri),
                     Arguments = "http://scottge.net/product/uwp-windows-10-sample-navigation-panes",
-                },
-                  new NavMenuItem()
-                {
-                    Symbol = Symbol.Edit,
-                    Label = "Page4",
-                    DestinationPage = typeof(Views.Page4)
                 }
+
             });
 
         public static AppShell Current = null;
