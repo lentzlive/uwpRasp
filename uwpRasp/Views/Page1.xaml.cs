@@ -28,7 +28,7 @@ namespace uwpRasp.Views
         public static double minData = 10000;
         public static double MaxData = 0;
 
-        public static double sumTime =0;
+        public static double sumTime = 0;
 
 
         static DeviceClient deviceClient;
@@ -52,7 +52,7 @@ namespace uwpRasp.Views
         static string _deviceId = "myFirstDevice";
         static int indexcount2 = 0;
         private Timer periodicTimer;
-
+        Timer receiveTimer;
         private int _timing = 100;
         DispatcherTimer timer;
         void OnLoaded(object sender, RoutedEventArgs e)
@@ -86,14 +86,62 @@ namespace uwpRasp.Views
             //  periodicTimer = new Timer(this.Timer_Tick, null, 0, 1000);
             timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
             timer.Tick += OnTimerTick;
+
+           // receiveTimer = new Timer(this.Receive_Timer_Tick, null, 0, System.Threading.Timeout.Infinite);
+
             Loaded += OnLoaded;
             Unloaded += MainPage_Unloaded;
 
         }
 
-        void OnTimerTick(object sender, object e)
+        public static int indexAwait = 0;
+
+        private async void Receive_Timer_Tick(object state)
         {
-            ReadADC();
+            try
+            {
+                Sensor s = new Sensor();
+                SensorValues sValues = s.GetSensorValue("myFirstDevice");
+
+                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+
+                    data.Add(
+                    new Point
+                    (
+                          indexAwait++,
+                        Convert.ToDouble(sValues.Temp)
+
+                    ));
+                });
+            }
+            catch (Exception ex)
+            { StatusText.Text = ex.Message; }
+
+        }
+
+
+        private async void OnTimerTick(object sender, object e)
+        {
+            try
+            {
+                Sensor s = new Sensor();
+                SensorValues sValues = s.GetSensorValue("myFirstDevice");
+
+                await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+
+                    data.Add(
+                    new Point
+                    (
+                          indexAwait++,
+                        Convert.ToDouble(sValues.Temp)
+
+                    ));
+                });
+            }
+            catch (Exception ex)
+            { StatusText.Text = ex.Message; }
         }
 
 
@@ -114,15 +162,15 @@ namespace uwpRasp.Views
 
                 Sensor s = new Sensor();
                 SensorValues sValues = s.GetSensorValue(_deviceId);
-           
+
 
                 sw.Stop();
 
-                double microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));            
-             //   double ns = 1000000000.0 * (double)sw.ElapsedTicks / Stopwatch.Frequency;
+                double microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                //   double ns = 1000000000.0 * (double)sw.ElapsedTicks / Stopwatch.Frequency;
 
                 sumTime += microseconds;
-                
+
 
 
                 var task = this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -138,9 +186,9 @@ namespace uwpRasp.Views
                         ));
 
                     indexcount2++;
-                 
+
                     txtTimeDiffMedio.Text = "Istant: " + Convert.ToString(sumTime / indexcount2) + " us";
-                    txtTimeDiff.Text ="medio: " + microseconds + " us";
+                    txtTimeDiff.Text = "medio: " + microseconds + " us";
 
                 });
             }

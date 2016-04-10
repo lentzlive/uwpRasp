@@ -108,7 +108,7 @@ namespace uwpRasp.Views
                 double _time = Data.GetTimeWatch();
                 sumTime += _time;
                 _timeMedio = sumTime / i;
-                txtCount.Text = Convert.ToString(i);
+                txtCount.Text = Convert.ToString(i) + " - " + Data.GetIterazioni().ToString() ;
                 txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
                 txtTimeWatchMedio.Text = _timeMedio.ToString("F");
                 i++;
@@ -168,7 +168,7 @@ namespace uwpRasp.Views
 
         const int PointsCount = 1100;
         const double Divider = 500;
-        const int NewPointsCount = 1;
+        const int NewPointsCount = 100;
 
         double count = 0;
         double timewatch = 0.00;
@@ -206,6 +206,13 @@ namespace uwpRasp.Views
         public double GetTempValue()
         {
             return tempValue;
+        }
+
+
+        int  iter = 0;
+        public double GetIterazioni()
+        {
+            return iter;
         }
 
 
@@ -247,7 +254,7 @@ namespace uwpRasp.Views
                 points.RemoveAt(0);
                 points.Add(new Point(count, GetValue(count)));
                 IncreaseCount();
-
+                iter++;
             }
             OnDataChanged(ChartDataUpdateType.Reset, -1);
         }

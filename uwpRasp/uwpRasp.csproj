@@ -99,6 +99,7 @@
     <Compile Include="AppShell.xaml.cs">
       <DependentUpon>AppShell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\MainViewModel.cs" />
     <Compile Include="Controls\NavMenuListView.cs" />
     <Compile Include="Controls\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
@@ -108,6 +109,8 @@
     <Compile Include="UC\ucRealTimeChart.xaml.cs">
       <DependentUpon>ucRealTimeChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DelegateCommand.cs" />
+    <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="Views\Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,9 @@
     </Compile>
     <Compile Include="Views\Page4.xaml.cs">
       <DependentUpon>Page4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PageHighSpeed.xaml.cs">
+      <DependentUpon>PageHighSpeed.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -176,6 +182,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Page4.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PageHighSpeed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -95,8 +95,8 @@
                 <ComboBoxItem>8</ComboBoxItem>
             </ComboBox>
             <Button x:Name="cmdChannelUpdate" Content="Aggiorna" Canvas.Left="900" Canvas.Top="48" Width="83"/>
-            <TextBlock x:Name="txtTimeDiff" Height="31" Canvas.Left="1043" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="11" Width="212"/>
-            <TextBlock x:Name="txtTimeDiffMedio" Height="31" Canvas.Left="1043" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="48" Width="212"/>
+            <TextBlock x:Name="txtTimeDiff" Height="31" Canvas.Left="1043" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="11" Width="300"/>
+            <TextBlock x:Name="txtTimeDiffMedio" Height="31" Canvas.Left="1043" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="48" Width="300"/>
         </Canvas>
 
 
