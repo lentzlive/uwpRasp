@@ -51,7 +51,7 @@ namespace uwpRasp.Views
 
 
         #endregion
-      //  SensorHelper _sensor = null;
+        //  SensorHelper _sensor = null;
         DispatcherTimer timer;
         public static double minData = 10000;
         public static double MaxData = 0;
@@ -62,20 +62,23 @@ namespace uwpRasp.Views
             this.InitializeComponent();
             rangeY.StartValue = 18.0;// minData - minData * 0.0002;
             rangeY.EndValue = 25.0;// MaxData + MaxData * 0.0002;
+
+            // rangeX.VisualRange. IsRightTapEnabled
+
+            // chart.AxisX.WholeRange.auto
             try
             {
-                 _sensor = new SensorHelper();
+                _sensor = new SensorHelper();
                 Data = new SensorDataGenerator();
                 timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
                 timer.Tick += OnTimerTick;
                 Loaded += OnLoaded;
                 Unloaded += OnUnloaded;
                 //_sensor = new SensorHelper();
-                 StatusText.Text = _sensor.Message;
+                StatusText.Text = _sensor.Message;
             }
             catch (Exception ex)
             { StatusText.Text = ex.Message; }
-         
 
         }
 
@@ -108,13 +111,13 @@ namespace uwpRasp.Views
                 double _time = Data.GetTimeWatch();
                 sumTime += _time;
                 _timeMedio = sumTime / i;
-                txtCount.Text = Convert.ToString(i) + " - " + Data.GetIterazioni().ToString() ;
+                txtCount.Text = Convert.ToString(i) + " - " + Data.GetIterazioni().ToString();
                 txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
                 txtTimeWatchMedio.Text = _timeMedio.ToString("F");
                 i++;
 
 
-              
+
                 double temp = Data.GetTempValue();
                 if (temp > MaxData)
                 {
@@ -126,6 +129,9 @@ namespace uwpRasp.Views
                     minData = temp;
                     rangeY.StartValue = Convert.ToDouble(temp) - 1;
                 }
+
+
+                //
 
             }
             catch (Exception ex)
@@ -142,6 +148,17 @@ namespace uwpRasp.Views
 
                 int val = int.Parse(cmbChannel.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
                 Data.SetPointCount(val);
+
+                double _tb = double.Parse(cmbTimeBase.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
+                Data.SetTimeBaseSelectior(double.Parse(cmbTimeBase.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture));
+
+
+                // Da testare
+                if (_tb == 1000)
+                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Millisecond;
+                else if(_tb == 1000000)
+                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Second;
+                Data.ResetPar();
 
 
                 i = 0;
@@ -176,6 +193,9 @@ namespace uwpRasp.Views
         public int NewPointsCount = 100;
 
         double count = 0;
+        double baseTime = 0;
+        double baseTimeSelector = 1;
+
         double timewatch = 0.00;
         double tempValue = 0.00;
         Random random = new Random();
@@ -187,7 +207,7 @@ namespace uwpRasp.Views
         {
             for (int i = 0; i < PointsCount; i++)
             {
-               // points.Add(new Point(i, GetValue(count)));
+                // points.Add(new Point(i, GetValue(count)));
                 points.Add(new Point(i, 0));
 
                 IncreaseCount();
@@ -202,6 +222,20 @@ namespace uwpRasp.Views
         {
             return count;
         }
+        public void SetTimeBaseSelectior(double val)
+        {
+            baseTimeSelector = val;
+        }
+
+
+        public void ResetPar()
+        {
+            count = 0;
+            baseTime = 0;
+            timewatch = 0;
+            tempValue = 0;
+        }
+
 
 
         public double GetTimeWatch()
@@ -212,7 +246,7 @@ namespace uwpRasp.Views
         {
             return tempValue;
         }
-        int  iter = 0;
+        int iter = 0;
         public double GetIterazioni()
         {
             return iter;
@@ -221,10 +255,20 @@ namespace uwpRasp.Views
 
         public void SetPointCount(int val)
         {
-             NewPointsCount = val;
+            NewPointsCount = val;
         }
 
 
+
+        SensorValues GetSensorvalues()
+        {
+            Sensor s = new Sensor();
+            SensorValues sValues = s.GetSensorValue("myFirstDevice");
+            tempValue = Convert.ToDouble(sValues.Temp);
+            this.timewatch = sValues.Timewatch;
+            return sValues;
+
+        }
         double GetValue(double count)
         {
             Sensor s = new Sensor();
@@ -258,10 +302,16 @@ namespace uwpRasp.Views
         }
         public void Refresh()
         {
+
+
             for (int i = 0; i < NewPointsCount; i++)
             {
+                SensorValues sValues = GetSensorvalues();
+                baseTime += sValues.Timewatch;
+
                 points.RemoveAt(0);
-                points.Add(new Point(count, GetValue(count)));
+                //  points.Add(new Point(count, GetValue(count)));
+                points.Add(new Point(baseTime / baseTimeSelector, Convert.ToDouble(sValues.Temp)));
                 IncreaseCount();
                 iter++;
             }

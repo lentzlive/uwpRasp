@@ -27,12 +27,11 @@
 
             <Charts:CartesianChart x:Name="chart" 
                                    ToolTipEnabled="False"
-                                   SelectionMode="None" Height="458" Width="1262" Canvas.Left="10">
+                                   SelectionMode="None"  Height="458" Width="1262" Canvas.Left="10">
                 <Charts:CartesianChart.AxisX>
-                    <Charts:AxisX  ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="True">
-
+                    <Charts:AxisX  x:Name="rangeX"  ShowMajorGridlines="True" ShowMinorGridlines="True" ShowLabels="True">
                         <Charts:AxisX.Title>
-                            <Charts:AxisTitle Content="Iterazioni"></Charts:AxisTitle>
+                            <Charts:AxisTitle Content="TimeBase [us]"></Charts:AxisTitle>
                         </Charts:AxisX.Title>
                         <Charts:AxisX.WholeRange>
                             <Charts:WholeAxisRange SideMargins="0" />
@@ -58,7 +57,13 @@
 
             <TextBlock x:Name="txtTimeWatch" Height="50"   Width="180" Canvas.Left="1326" Canvas.Top="90"  />
             <TextBlock x:Name="txtTimeWatchMedio" Height="50"  Width="180" Canvas.Left="1326" Canvas.Top="145"   />
+            <ComboBox AllowDrop="True" x:Name="cmbTimeBase" Canvas.Left="10" Canvas.Top="463" Width="180">
+                <ComboBoxItem x:Name="us" IsSelected="True">1</ComboBoxItem>
+                <ComboBoxItem x:Name="ms">1000</ComboBoxItem>
+                <ComboBoxItem x:Name="s">1000000</ComboBoxItem>
 
+
+            </ComboBox>
         </Canvas>
         <Canvas Grid.Row="1" Grid.Column="1" Margin="0,10,20,10">
             <TextBox x:Name="textPlaceHolder" Height="20" Canvas.Left="10" Canvas.Top="10" Width="341" />
@@ -84,6 +89,7 @@
 
             <TextBlock x:Name="textBlock1" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="Numero Acquisizioni in refreshe" VerticalAlignment="Top" Canvas.Left="755" Canvas.Top="10"/>
             <ComboBox AllowDrop="True" x:Name="cmbChannel" Canvas.Left="763" Canvas.Top="48" Width="180" Grid.Column="1" Grid.Row="1" RenderTransformOrigin="-4.989,-1.625">
+                <ComboBoxItem>1</ComboBoxItem>
                 <ComboBoxItem IsSelected="True">10</ComboBoxItem>
                 <ComboBoxItem>50</ComboBoxItem>
                 <ComboBoxItem >100</ComboBoxItem>
