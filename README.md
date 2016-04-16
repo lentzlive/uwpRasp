@@ -18,3 +18,6 @@ sw.Stop();
 long microseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L));
 long nanoseconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L*1000L*1000L));
 ```
+
+
+<img width="400" src="https://github.com/lentzlive/uwpRasp/blob/master/uwpRaspEcg_bb.png" />
