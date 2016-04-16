@@ -91,7 +91,7 @@ namespace DeviceLibrary
             {
            
                 var settings = new SpiConnectionSettings(SPI_CHIP_SELECT_LINE);
-                settings.ClockFrequency = 1000000;// 10000000;// 3600000;// 1000000;// 500000;
+                settings.ClockFrequency = 1000000;// 1000000;// 10000000;// 3600000;// 1000000;// 500000;
                 settings.Mode = SpiMode.Mode0;
 
                 string spiAqs = SpiDevice.GetDeviceSelector(SPI_CONTROLLER_NAME);

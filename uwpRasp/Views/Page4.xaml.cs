@@ -139,6 +139,11 @@ namespace uwpRasp.Views
                 double timingInterval = double.Parse(cmbTiming.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
                 timer.Interval = TimeSpan.FromMilliseconds(timingInterval);
 
+
+                int val = int.Parse(cmbChannel.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture);
+                Data.SetPointCount(val);
+
+
                 i = 0;
                 sumTime = 0;
             }
@@ -166,9 +171,9 @@ namespace uwpRasp.Views
     public class SensorDataGenerator : ChartDataAdapter
     {
 
-        const int PointsCount = 1100;
+        const int PointsCount = 1000;
         const double Divider = 500;
-        const int NewPointsCount = 100;
+        public int NewPointsCount = 100;
 
         double count = 0;
         double timewatch = 0.00;
@@ -207,12 +212,16 @@ namespace uwpRasp.Views
         {
             return tempValue;
         }
-
-
         int  iter = 0;
         public double GetIterazioni()
         {
             return iter;
+        }
+
+
+        public void SetPointCount(int val)
+        {
+             NewPointsCount = val;
         }
 
 
