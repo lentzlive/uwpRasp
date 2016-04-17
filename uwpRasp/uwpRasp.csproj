@@ -126,6 +126,9 @@
     <Compile Include="Views\PageHighSpeed.xaml.cs">
       <DependentUpon>PageHighSpeed.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PageTimeBase.xaml.cs">
+      <DependentUpon>PageTimeBase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PageHighSpeed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PageTimeBase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

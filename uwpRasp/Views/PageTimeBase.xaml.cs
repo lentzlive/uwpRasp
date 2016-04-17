@@ -17,8 +17,8 @@ using DevExpress.UI.Xaml.Charts;
 using DeviceLibrary;
 using DeviceLibrary.Model;
 using System.Globalization;
-
-
+using System.Threading;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,14 +27,13 @@ namespace uwpRasp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Page4 : Page
+    public sealed partial class PageTimeBase : Page
     {
-
         #region static
         public static readonly DependencyProperty DataProperty;
-        static Page4()
+        static PageTimeBase()
         {
-            DataProperty = DependencyProperty.Register("Data", typeof(SensorDataGenerator), typeof(Page4), new PropertyMetadata(null));
+            DataProperty = DependencyProperty.Register("Data", typeof(SensorDataGenerator2), typeof(PageTimeBase), new PropertyMetadata(null));
         }
 
 
@@ -43,9 +42,9 @@ namespace uwpRasp.Views
 
 
         #region dep props
-        public SensorDataGenerator Data
+        public SensorDataGenerator2 Data
         {
-            get { return (SensorDataGenerator)GetValue(DataProperty); }
+            get { return (SensorDataGenerator2)GetValue(DataProperty); }
             set { SetValue(DataProperty, value); }
         }
 
@@ -57,7 +56,7 @@ namespace uwpRasp.Views
         public static double MaxData = 0;
         SensorHelper _sensor = null;
 
-        public Page4()
+        public PageTimeBase()
         {
             this.InitializeComponent();
             rangeY.StartValue = 18.0;// minData - minData * 0.0002;
@@ -68,8 +67,8 @@ namespace uwpRasp.Views
             // chart.AxisX.WholeRange.auto
             try
             {
-                _sensor = new SensorHelper();
-                Data = new SensorDataGenerator();
+                // _sensor = new SensorHelper();
+                Data = new SensorDataGenerator2();
                 timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
                 timer.Tick += OnTimerTick;
                 Loaded += OnLoaded;
@@ -79,8 +78,8 @@ namespace uwpRasp.Views
             }
             catch (Exception ex)
             { StatusText.Text = ex.Message; }
-
         }
+
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -115,24 +114,39 @@ namespace uwpRasp.Views
                 txtTimeWatch.Text = _time.ToString("F") + " us";// strTime;
                 txtTimeWatchMedio.Text = _timeMedio.ToString("F");
                 i++;
+                // slider.Value
 
-
-
-                double temp = Data.GetTempValue();
-                if (temp > MaxData)
+                //chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.StartValue) + Convert.ToDouble(txtstart.Text), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue)  };
+             
+                if (slider.Value < 0)
                 {
-                    MaxData = temp;
-                    rangeY.EndValue = Convert.ToDouble(temp) + 1;
+                    //chart.ActualAxisX.WholeRange.SetInternalValues(Convert.ToDouble(chart.AxisX.WholeRange.EndValue) -1000 - Convert.ToDouble(slider.Value), Convert.ToDouble(chart.AxisX.WholeRange.EndValue) + Convert.ToDouble(slider.Value));
+
+                  //  chart.AxisX.WholeRange.SetInternalValues(chart.ActualAxisX.VisualRange)
+                  // chart.AxisX.WholeRange.StartValue = chart.AxisX.WholeRange.StartValue - slider.Value;
+                  //  chart.ActualAxisX.WholeRange=new WholeAxisRange() {StartValue = Convert.ToDouble(chart.AxisX.WholeRange.StartValue)  }
                 }
-                if (temp < minData)
-                {
-                    minData = temp;
-                    rangeY.StartValue = Convert.ToDouble(temp) - 1;
-                }
-
-                chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.StartValue) + Convert.ToDouble(slider.Value), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) };
+                else
+                    chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.StartValue) + Convert.ToDouble(slider.Value), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) };
+                txtstart.Text = slider.Value.ToString();
 
 
+                //double temp = Data.GetTempValue();
+                //if (temp > MaxData)
+                //{
+                //    MaxData = temp;
+                //    rangeY.EndValue = Convert.ToDouble(temp) + 1;
+                //}
+                //if (temp < minData)
+                //{
+                //    minData = temp;
+                //    rangeY.StartValue = Convert.ToDouble(temp) - 1;
+                //}
+
+                MaxData = 2600;
+                rangeY.EndValue = MaxData;
+                minData = 400;
+                rangeY.StartValue = minData;
                 //
 
             }
@@ -156,12 +170,15 @@ namespace uwpRasp.Views
 
 
                 // Da testare
-                if (_tb == 1000)
-                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Millisecond;
-                else if(_tb == 1000000)
-                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Second;
-                Data.ResetPar();
+                //if (_tb == 1000)
+                //    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Millisecond;
+                //else if (_tb == 1000000)
+                //    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Second;
 
+
+                //Data.ResetPar();
+                textPlaceHolder.Text = chart.AxisX.WholeRange.ToString();
+                // chart.AxisX.VisualRange.
 
                 i = 0;
                 sumTime = 0;
@@ -184,15 +201,17 @@ namespace uwpRasp.Views
             catch (Exception ex)
             { this.StatusText.Text = ex.Message; }
         }
+
     }
 
 
-    public class SensorDataGenerator : ChartDataAdapter
+
+    public class SensorDataGenerator2 : ChartDataAdapter
     {
 
-        const int PointsCount = 1000;
+        const int PointsCount = 10000;
         const double Divider = 500;
-        public int NewPointsCount = 100;
+        public int NewPointsCount = 10;
 
         double count = 0;
         double baseTime = 0;
@@ -205,7 +224,7 @@ namespace uwpRasp.Views
 
         protected override int RowsCount { get { return points.Count; } }
 
-        public SensorDataGenerator()
+        public SensorDataGenerator2()
         {
             for (int i = 0; i < PointsCount; i++)
             {
@@ -270,15 +289,27 @@ namespace uwpRasp.Views
             this.timewatch = sValues.Timewatch;
             return sValues;
 
+
         }
         double GetValue(double count)
         {
-            Sensor s = new Sensor();
-            SensorValues sValues = s.GetSensorValue("myFirstDevice");
-            this.timewatch = sValues.Timewatch;
-            tempValue = Convert.ToDouble(sValues.Temp);
-            return tempValue;
-            //return (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
+            //Sensor s = new Sensor();
+            //SensorValues sValues = s.GetSensorValue("myFirstDevice");
+            //this.timewatch = sValues.Timewatch;
+            //tempValue = Convert.ToDouble(sValues.Temp);
+            //return tempValue;
+            Task.Delay(1).Wait();
+            int c = Convert.ToInt32(count);
+            int multi = 33;
+            double value = (20 + random.NextDouble() - 0.5) * multi;
+            if (c % 100 == 0)
+                value = 2500;
+            // double value = (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
+
+
+            tempValue = Convert.ToDouble(value);
+
+            return value;// (Math.Sin((count / Divider) * 2.0 * Math.PI) + random.NextDouble() - 0.5) * 33;
         }
         protected override DateTime GetDateTimeValue(int index, ChartDataMemberType dataMember)
         {
@@ -308,12 +339,12 @@ namespace uwpRasp.Views
 
             for (int i = 0; i < NewPointsCount; i++)
             {
-                SensorValues sValues = GetSensorvalues();
-                baseTime += sValues.Timewatch;
+                //  SensorValues sValues = GetSensorvalues();
+                //  baseTime += sValues.Timewatch;
 
                 points.RemoveAt(0);
-                //  points.Add(new Point(count, GetValue(count)));
-                points.Add(new Point(baseTime / baseTimeSelector, Convert.ToDouble(sValues.Temp)));
+                points.Add(new Point(count, GetValue(count)));
+                // points.Add(new Point(baseTime / baseTimeSelector, Convert.ToDouble(sValues.Temp)));
                 IncreaseCount();
                 iter++;
             }
@@ -322,5 +353,6 @@ namespace uwpRasp.Views
 
 
     }
+
 
 }
