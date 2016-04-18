@@ -36,9 +36,6 @@ namespace uwpRasp.Views
         {
             DataProperty = DependencyProperty.Register("Data", typeof(SensorDataGenerator), typeof(Page4), new PropertyMetadata(null));
         }
-
-
-
         #endregion
 
 
@@ -51,7 +48,7 @@ namespace uwpRasp.Views
 
 
         #endregion
-        //  SensorHelper _sensor = null;
+
         DispatcherTimer timer;
         public static double minData = 10000;
         public static double MaxData = 0;
@@ -62,19 +59,15 @@ namespace uwpRasp.Views
             this.InitializeComponent();
             rangeY.StartValue = 18.0;// minData - minData * 0.0002;
             rangeY.EndValue = 25.0;// MaxData + MaxData * 0.0002;
-
-            // rangeX.VisualRange. IsRightTapEnabled
-
-            // chart.AxisX.WholeRange.auto
+     
             try
             {
                 _sensor = new SensorHelper();
                 Data = new SensorDataGenerator();
-                timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1000) };
+                timer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 1) };
                 timer.Tick += OnTimerTick;
                 Loaded += OnLoaded;
-                Unloaded += OnUnloaded;
-                //_sensor = new SensorHelper();
+                Unloaded += OnUnloaded;            
                 StatusText.Text = _sensor.Message;
             }
             catch (Exception ex)
@@ -92,7 +85,6 @@ namespace uwpRasp.Views
         {
             DataContext = null;
             timer.Stop();
-
         }
 
 
@@ -130,7 +122,8 @@ namespace uwpRasp.Views
                     rangeY.StartValue = Convert.ToDouble(temp) - 1;
                 }
 
-                chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.StartValue) + Convert.ToDouble(slider.Value), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) };
+               // chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.StartValue) + Convert.ToDouble(slider.Value), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) };
+                chart.ActualAxisX.VisualRange = new VisualAxisRange() { StartValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) - Convert.ToDouble(slider.Value), EndValueInternal = Convert.ToDouble(chart.AxisX.WholeRange.EndValue) };
 
 
                 //
@@ -155,13 +148,14 @@ namespace uwpRasp.Views
                 Data.SetTimeBaseSelectior(double.Parse(cmbTimeBase.SelectionBoxItem.ToString(), CultureInfo.InvariantCulture));
 
 
-                // Da testare
-                if (_tb == 1000)
-                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Millisecond;
-                else if(_tb == 1000000)
-                    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Second;
-                Data.ResetPar();
+                slider.Maximum = _tb;
 
+                // Da testare
+                //if (_tb == 1000)
+                //    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Millisecond;
+                //else if(_tb == 1000000)
+                //    chart.AxisX.DateTimeMeasureUnit = DateTimeMeasureUnit.Second;
+                //Data.ResetPar();
 
                 i = 0;
                 sumTime = 0;
@@ -192,11 +186,11 @@ namespace uwpRasp.Views
 
         const int PointsCount = 1000;
         const double Divider = 500;
-        public int NewPointsCount = 100;
+        public int NewPointsCount = 1000;
 
         double count = 0;
         double baseTime = 0;
-        double baseTimeSelector = 1;
+        double baseTimeSelector = 1000;
 
         double timewatch = 0.00;
         double tempValue = 0.00;
@@ -304,16 +298,14 @@ namespace uwpRasp.Views
         }
         public void Refresh()
         {
-
-
             for (int i = 0; i < NewPointsCount; i++)
             {
                 SensorValues sValues = GetSensorvalues();
-                baseTime += sValues.Timewatch;
+                baseTime += sValues.Timewatch / baseTimeSelector;
 
                 points.RemoveAt(0);
                 //  points.Add(new Point(count, GetValue(count)));
-                points.Add(new Point(baseTime / baseTimeSelector, Convert.ToDouble(sValues.Temp)));
+                points.Add(new Point(baseTime , Convert.ToDouble(sValues.Temp)));
                 IncreaseCount();
                 iter++;
             }
