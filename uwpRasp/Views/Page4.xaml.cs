@@ -186,7 +186,7 @@ namespace uwpRasp.Views
 
         const int PointsCount = 1000;
         const double Divider = 500;
-        public int NewPointsCount = 1000;
+        public int NewPointsCount = 100;
 
         double count = 0;
         double baseTime = 0;
@@ -205,7 +205,6 @@ namespace uwpRasp.Views
             {
                 // points.Add(new Point(i, GetValue(count)));
                 points.Add(new Point(i, 0));
-
                 IncreaseCount();
             }
         }

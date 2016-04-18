@@ -80,6 +80,7 @@
                 <ComboBoxItem>0.1</ComboBoxItem>
                 <ComboBoxItem IsSelected="True">1</ComboBoxItem>
                 <ComboBoxItem>10</ComboBoxItem>
+                <ComboBoxItem>30</ComboBoxItem>
                 <ComboBoxItem >100</ComboBoxItem>
                 <ComboBoxItem >1000</ComboBoxItem>
                 <ComboBoxItem>10000</ComboBoxItem>
@@ -92,6 +93,7 @@
             <TextBlock x:Name="textBlock1" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="Numero Acquisizioni in refreshe" VerticalAlignment="Top" Canvas.Left="755" Canvas.Top="10"/>
             <ComboBox AllowDrop="True" x:Name="cmbChannel" Canvas.Left="763" Canvas.Top="48" Width="180" Grid.Column="1" Grid.Row="1" RenderTransformOrigin="-4.989,-1.625">
                 <ComboBoxItem>1</ComboBoxItem>
+                <ComboBoxItem >5</ComboBoxItem>
                 <ComboBoxItem >10</ComboBoxItem>
                 <ComboBoxItem>50</ComboBoxItem>
                 <ComboBoxItem IsSelected="True">100</ComboBoxItem>
@@ -100,6 +102,9 @@
                 <ComboBoxItem>400</ComboBoxItem>
                 <ComboBoxItem>500</ComboBoxItem>
                 <ComboBoxItem>1000</ComboBoxItem>
+                <ComboBoxItem>2000</ComboBoxItem>
+                <ComboBoxItem>5000</ComboBoxItem>
+                <ComboBoxItem>10000</ComboBoxItem>
             </ComboBox>
             <Button x:Name="cmdStopSpi" Click="cmdStopSpi_Click" Content="STOP" Canvas.Left="1279" Canvas.Top="14" Width="195" VerticalAlignment="Stretch" Height="66"/>
         </Canvas>

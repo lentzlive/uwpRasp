@@ -59,19 +59,14 @@ namespace DeviceLibrary
         private async void InitAll()
         {
             string status = "";
-            //if (ADC_DEVICE == AdcDevice.NONE)
-            //{
-            //    status = "Please change the ADC_DEVICE variable to either MCP3002 or MCP3208, or MCP3008";
-            //    Message = "Please change the ADC_DEVICE variable to either MCP3002 or MCP3208, or MCP3008";
-            
-            //    return;
-            //}
+    
 
             try
             {
                 InitGpio();         /* Initialize GPIO to toggle the LED                          */
                 await InitSPI();    /* Initialize the SPI bus for communicating with the ADC      */
-
+                await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(2));
+                status = "Inizializzazione OK";
             }
             catch (Exception ex)
             {
@@ -81,7 +76,7 @@ namespace DeviceLibrary
                 return;
             }
 
-          await  System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(3));
+        
 
         }
 
