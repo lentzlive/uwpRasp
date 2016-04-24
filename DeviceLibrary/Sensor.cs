@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DeviceLibrary
 {
    public  class Sensor
-    { 
+    {  
 
         public SensorValues GetSensorValue(string deviceId)
         {
