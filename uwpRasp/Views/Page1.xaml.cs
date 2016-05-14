@@ -32,8 +32,8 @@ namespace uwpRasp.Views
 
 
         static DeviceClient deviceClient;
-        static string iotHubUri = "IoTLentzLive.azure-devices.net";
-        static string deviceKey = "beAhLKFzamrJtw6Y7EE0oJzjemFA/rvY7i1SBGB/JBY=";
+        static string iotHubUri = "xxxxxx";
+        static string deviceKey = "xxxxxx";
         public string TextLines { get; set; }
 
         public int Timing
