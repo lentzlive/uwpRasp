@@ -112,6 +112,9 @@
     </Compile>
     <Compile Include="Utilities\DelegateCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="Views\bluetooth.xaml.cs">
+      <DependentUpon>bluetooth.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="UC\ucRealTimeChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\bluetooth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
